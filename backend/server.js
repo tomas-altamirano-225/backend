@@ -2,12 +2,13 @@ const express = require('express');
 const colors = require('colors');
 const dotenv = require('dotenv').config();
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
 const app = express();
 
-app.listen(port, () => console.log(`Servidor Iniciado en el puerto ${port}`))
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.get('/api/saludo', (req, res) => {
-    res.send('Hola Mundo');
-})
+app.use('/api/tareas', require('./routes/tareasRoutes'));
+
+app.listen(port, () => console.log(`Servidor Iniciado en el puerto ${port}`))
