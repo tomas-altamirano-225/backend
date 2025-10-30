@@ -30,7 +30,14 @@ const updateTareas = asyncHandler(async(req, res) => {
 })
 
 const deleteTareas = asyncHandler(async(req, res) => {
-    res.status(200).json({ "mensaje": `Tarea Borrada ${req.params.id}` });
+    //Verficar que la tarea existe
+    const tarea = await Tarea.findById(req.params.id);
+    if (!tarea){
+        res.status(404);
+        throw new Error("Tarea no encontrada");
+    }
+    await tarea.deleteOne();
+    res.status(200).json({id: req.params.id});
 })
 
 module.exports = { 
